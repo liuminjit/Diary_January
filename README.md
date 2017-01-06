@@ -83,7 +83,7 @@ substring 方法用于提取字符串中介于两个指定下标之间的字符�
 
 stringObject.substring(start,stop) 
 
-* 参数 描述 
+* 参数 描述
 
 start 必需。一个非负的整数，规定要提取的子串的第一个字符在 stringObject 中的位置。 
 
