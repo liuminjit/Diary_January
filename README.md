@@ -202,3 +202,93 @@ obj = JSON.parse(str);   //重新转换为对象
 localStorage也一样，只是和sessionStorage的存储时间不一样
 
 需要注意的是，JS中的**数组本质**上也是**对象类型**，所以上面的代码对数组也是适用的
+
+### 【用法总结】
+
+localStorage和sessionStorage一样都是用来存储客户端临时信息的对象。
+
+他们均只能存储字符串类型的对象（虽然规范中可以存储其他原生类型的对象，但是目前为止没有浏览器对其进行实现）。
+
+localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的UI上清除localStorage信息，否则这些信息将永远存在。
+
+sessionStorage生命周期为当前窗口或标签页，一旦窗口或标签页被永久关闭了，那么所有通过sessionStorage存储的数据也就被清空了。
+
+不同浏览器无法共享localStorage或sessionStorage中的信息。
+
+相同浏览器的不同页面间可以共享相同的localStorage（页面属于相同域名和端口），但是不同页面或标签页间无法共享sessionStorage的信息。
+
+这里需要注意的是，页面及标签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
+
+同源的判断规则：
+
+http://www.test.com
+
+https://www.test.com （不同源，因为协议不同）
+
+http://my.test.com（不同源，因为主机名不同）
+
+http://www.test.com:8080（不同源，因为端口不同）
+
+localStorage和sessionStorage使用时使用相同的API：
+
+localStorage.setItem("key","value");//以“key”为名称存储一个值“value”
+
+localStorage.getItem("key");//获取名称为“key”的值
+
+枚举localStorage的方法：
+
+for(var i=0;i<localStorage.length;i++){
+
+     var name = localStorage.key(i);
+     
+     var value = localStorage.getItem(name);
+
+}
+
+删除localStorage中存储信息的方法：
+
+localStorage.removeItem("key");//删除名称为“key”的信息
+
+localStorage.clear();//清空localStorage中所有信息
+
+通过getItem或直接使用localStorage["key"]获取到的信息均为实际存储的副本。
+ 
+例如：
+
+localStorage.key = {value1:"value1"};
+
+localStorage.key.value1='a';
+
+这里是无法对实际存储的值产生作用的，下面的写法也不可以：
+
+localStorage.getItem("key").value1="a";
+
+### 【精简总结】
+
+localStorage存储方法
+
+localStorage.name = localStorage["name"]='vanida'；localStorage.setItem("name","vanida");//这三种设置值方式是一样的；
+
+localStorage获取值方法
+
+var name = localStorage["name"] = localStorage.name＝ localStorage.getItem("name");//这三种获取值方式是一样的；
+
+localStorage清值方法
+
+localStorage.removeItem("name");或者localStorage.name＝'';//清除name的值
+
+localStorage只能存储字符串，如果需要存储对象，首先要转化为字符串。利用JSON.stringify()；
+
+例子：
+
+var person = {name:"vanida","sex":"girl","age":25};localStorage.setItem("person",JSON.stringify(person));
+
+// localStorage.person="{"name":"vanida","sex":"girl","age":25}"
+
+要特别注意JSON.stringify()中不要忘了“i”,stringify而不是stringfy。已经被坑了好几次！
+
+然后取出person的对象你可以用JSON.parse();
+
+例子：
+
+person = JSON.parse(storage.getItem("person"));
