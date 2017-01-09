@@ -175,3 +175,30 @@ Math.floor(15.7784514000 * 100) / 100
 第七：分割线  三个星号
 
 PS.我认为表格难看又不方便，所以就不描述
+
+## 【localstorage 和 sessionstorage】 深入理解
+
+将数据存储到sessionStorage和localStorage中，这样做的好处有：
+
+1. 缓存数据
+
+2. 减少对内存的占用
+
+**但是**，storage只能存储**字符串**的数据，对于JS中常用的**数组或对象**却**不能直接存储**
+
+通过JSON对象提供的**parse和stringify**将其他数据类型转化成**字符串**，再存储到storage中就可以了。
+* 实例
+
+var obj = { name:'Jim' };   
+
+var str = JSON.stringify(obj);   
+
+sessionStorage.obj = str;   //存入   
+
+str = sessionStorage.obj;   //读取   
+
+obj = JSON.parse(str);   //重新转换为对象   
+
+localStorage也一样，只是和sessionStorage的存储时间不一样
+
+需要注意的是，JS中的**数组本质**上也是**对象类型**，所以上面的代码对数组也是适用的
